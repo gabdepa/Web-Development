@@ -1,0 +1,72 @@
+// Get number of ".drum" in .html
+var numOfDrums = document.querySelectorAll(".drum").length;
+
+// Make Sound based on clicks
+for (var i = 0; i < numOfDrums; ++i) {
+    // Listen for clicks and when have a click execute sound
+    document.querySelectorAll(".drum")[i].addEventListener("click", function () {
+        // Get which button was clicked
+        var buttonInnerHTML = this.innerHTML;
+        makeSound(buttonInnerHTML);
+        buttonAnimation(buttonInnerHTML);
+    }
+    );
+}
+
+// Make Sound based on the key pressed
+document.addEventListener("keydown", function (event) {
+    // Get which key was pressed
+    var eventKey = event.key;
+    makeSound(eventKey);
+    buttonAnimation(eventKey);
+}
+);
+
+function makeSound(key) {
+    switch (key) {
+        case "w":
+            var tom1 = new Audio('./sounds/tom-1.mp3');
+            tom1.play();
+            break;
+        case "a":
+            var tom2 = new Audio('./sounds/tom-2.mp3');
+            tom2.play();
+            break;
+        case "s":
+            var tom3 = new Audio('./sounds/tom-3.mp3');
+            tom3.play();
+            break;
+        case "d":
+            var tom4 = new Audio('./sounds/tom-4.mp3');
+            tom4.play();
+            break;
+        case "j":
+            var snare = new Audio('./sounds/snare.mp3');
+            snare.play();
+            break;
+        case "k":
+            var crash = new Audio('./sounds/crash.mp3');
+            crash.play();
+            break;
+        case "l":
+            var kick = new Audio('./sounds/kick.mp3');
+            kick.play();
+            break;
+        // Default situation
+        default:
+            console.log(keyPressed);
+    }
+}
+
+function buttonAnimation(key) {
+    // format into a css class
+    var classKey = "." + key;
+    // Get which button
+    var activeButton = document.querySelector(classKey);
+    // Add .pressed to html element
+    activeButton.classList.add("pressed");
+    // Set timeout to remove the .pressed class from element
+    setTimeout(function () {
+        activeButton.classList.remove("pressed");
+    }, 100);
+}
