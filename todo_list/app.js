@@ -18,7 +18,7 @@ app.get("/", function (req, res) {
     const day = date.getDay();
 
     // Render "list.ejs" file
-    res.render("list", { listTitle: day, newListItems: items });
+    res.render("home", { listTitle: day, newListItems: items });
 });
 
 app.post("/", function (req, res) {
