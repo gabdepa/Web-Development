@@ -38,6 +38,23 @@ const articleSchema = {
 // The first argument is the singular name of the collection your model is for. Mongoose automatically looks for the plural, lowercased version of your model name.
 const Article = mongoose.model("Article", articleSchema);
 
+// Handle GET requests to the "/articles" route
+app.get("/articles", function (req, res) {
+  // Use the Article model to find all articles in the database
+  Article.find()
+    // Once the find operation is done, this function will be called with the found articles as its argument
+    .then(function (foundArticles) {
+      // Send the found articles back to the client as the response
+      res.send(foundArticles);
+    })
+    // If an error occurred during the find operation, this function will be called with the error as its argument
+    .catch(function (err) {
+      // Send the error back to the client as the response
+      res.send(err);
+      // Handle the error appropriately here
+    });
+});
+
 // Make the Express application listen for HTTP requests on port 3000, logging a message to the console once the server is running
 app.listen(3000, function () {
   console.log("Server started on port 3000");
