@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 // Import Mongoose, an Object Data Modeling (ODM) library for MongoDB and Node.js. It provides a straight-forward, schema-based solution to model application data.
 const mongoose = require("mongoose");
+
 // Initialize an Express application.
 const app = express();
 // Set the view engine of the Express application to EJS, allowing Express to render EJS templates
@@ -19,10 +20,24 @@ app.use(
 );
 // Use Express's built-in middleware function to serve static files, in this case from the "public" directory
 app.use(express.static("public"));
+
 // Use 'dotenv' package to load environment variables from a .env file into process.env
 require("dotenv").config();
 // Connect to the MongoDB database with a connection string stored in the MONGO_URL environment variable, while setting 'useNewUrlParser' to true for MongoDB driver's new URL string parsing
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
+
+// Define a schema for the 'article' collection
+// The schema specifies that each article document will have a 'title' and a 'content' field, both of which are strings
+const articleSchema = {
+  title: String,
+  content: String,
+};
+
+// Create an 'Article' model based on the 'articleSchema'
+// The model provides an interface for interacting with the 'article' collection in the MongoDB database
+// The first argument is the singular name of the collection your model is for. Mongoose automatically looks for the plural, lowercased version of your model name.
+const Article = mongoose.model("Article", articleSchema);
+
 // Make the Express application listen for HTTP requests on port 3000, logging a message to the console once the server is running
 app.listen(3000, function () {
   console.log("Server started on port 3000");
