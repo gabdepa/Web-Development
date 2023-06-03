@@ -75,6 +75,20 @@ app.post("/articles", function (req, res) {
     });
 });
 
+// Handle DELETE requests to the "/articles" route
+app.delete("/articles", function (req, res) {
+  // Use the Article model to delete all documents in the collection
+  Article.deleteMany()
+    // If the delete operation was successful, send a success message to the client
+    .then(function () {
+      res.send("Successfully deleted all records!");
+    })
+    // If an error occurred during the delete operation, send the error to the client
+    .catch(function (err) {
+      res.send(err);
+    });
+});
+
 // Make the Express application listen for HTTP requests on port 3000, logging a message to the console once the server is running
 app.listen(3000, function () {
   console.log("Server started on port 3000");
