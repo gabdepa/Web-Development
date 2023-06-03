@@ -38,7 +38,9 @@ const articleSchema = {
 // The first argument is the singular name of the collection your model is for. Mongoose automatically looks for the plural, lowercased version of your model name.
 const Article = mongoose.model("Article", articleSchema);
 
-app.route("/articles")
+// Create a route for "/articles" and chain HTTP methods (GET, POST, DELETE) to it
+app
+  .route("/articles")
   // Handle GET requests to the "/articles" route
   .get(function (req, res) {
     // Use the Article model to find all articles in the database
@@ -52,7 +54,6 @@ app.route("/articles")
       .catch(function (err) {
         // Send the error back to the client as the response
         res.send(err);
-        // Handle the error appropriately here
       });
   })
   // Handle POST requests to the "/articles" route
@@ -88,6 +89,78 @@ app.route("/articles")
         res.send(err);
       });
   });
+
+///////////////////////////////// Requests targetting a specific article //////////////////////////////////////////
+
+// Begin defining a route handler for routes in the form "/articles/:articleTitle"
+app
+  .route("/articles/:articleTitle")
+  // Handle GET requests to this route
+  .get(function (req, res) {
+    // Use the Article model to find one article in the database with a title matching the title provided in the route parameter
+    Article.findOne({ title: req.params.articleTitle })
+      // Once the find operation is done, this function will be called with the found article as its argument
+      .then(function (foundArticle) {
+        // Send the found article back to the client as the response
+        res.send(foundArticle);
+      })
+      // If an error occurred during the find operation, this function will be called with the error as its argument
+      .catch(function (err) {
+        // Send the error back to the client as the response
+        res.send(err);
+      });
+  })
+  // Handle PUT requests to the "/article/:articleTitle" route
+  .put(function (req, res) {
+    // Create an object to hold the fields to be updated
+    let updateObject = {};
+    // If a title was provided in the request, add it to the update object
+    if (req.body.title) {
+      updateObject.title = req.body.title;
+    }
+    // If content was provided in the request, add it to the update object
+    if (req.body.content) {
+      updateObject.content = req.body.content;
+    }
+    // Use the Article model to find the document with the specified title and update it
+    // Note: req.params.articleTitle contains the title from the request URL
+    // Note: the $set operator is used here to update only the specified fields in the document
+    Article.updateMany(
+      { title: req.params.articleTitle },
+      { $set: updateObject }
+    )
+      // Once the update operation is done, this function will be called
+      .then(function () {
+        // Send a success message back to the client as the response
+        res.send("Successfully updated Article!");
+      })
+      // If an error occurred during the update operation, this function will be called with the error as its argument
+      .catch(function (err) {
+        // Send the error back to the client as the response
+        res.send(err);
+      });
+  })
+  // Handle PATCH requests to the "/article/:articleTitle" route
+  .patch(function (req, res) {
+    // Use the Article model to find the document with the specified title and update it
+    // Note: req.params.articleTitle contains the title from the request URL
+    // Note: req.body contains the fields to be updated and their new values
+    // Note: the $set operator is used here to update only the specified fields in the document
+    Article.updateMany({ title: req.params.articleTitle }, { $set: req.body })
+      // Once the update operation is done, this function will be called
+      .then(function () {
+        // Send a success message back to the client as the response
+        res.send("Successfully updated Article!");
+      })
+      // If an error occurred during the update operation, this function will be called with the error as its argument
+      .catch(function (err) {
+        // Send the error back to the client as the response
+        res.send(err);
+      });
+  });
+
+// .post()
+// .delete();
 
 // Make the Express application listen for HTTP requests on port 3000, logging a message to the console once the server is running
 app.listen(3000, function () {
