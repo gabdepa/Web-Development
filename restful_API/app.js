@@ -55,6 +55,26 @@ app.get("/articles", function (req, res) {
     });
 });
 
+// Handle POST requests to the "/articles" route
+app.post("/articles", function (req, res) {
+  // Create a new article instance using the title and content from the request body
+  const newArticle = new Article({
+    title: req.body.title,
+    content: req.body.content,
+  });
+  // Try to save the new article in the database
+  newArticle
+    .save()
+    // If the article was saved successfully, send a success message to the client
+    .then(function () {
+      res.send("Successfully added new article!");
+    })
+    // If an error occurred during the save operation, send the error to the client
+    .catch(function (err) {
+      res.send(err);
+    });
+});
+
 // Make the Express application listen for HTTP requests on port 3000, logging a message to the console once the server is running
 app.listen(3000, function () {
   console.log("Server started on port 3000");
