@@ -90,11 +90,10 @@ app
       });
   });
 
-///////////////////////////////// Requests targetting a specific article //////////////////////////////////////////
+////////////////////////////////////////// Requests targetting a specific article //////////////////////////////////////////
 
 // Begin defining a route handler for routes in the form "/articles/:articleTitle"
-app
-  .route("/articles/:articleTitle")
+app.route("/articles/:articleTitle")
   // Handle GET requests to this route
   .get(function (req, res) {
     // Use the Article model to find one article in the database with a title matching the title provided in the route parameter
@@ -157,10 +156,23 @@ app
         // Send the error back to the client as the response
         res.send(err);
       });
+  })
+  // Handle DELETE requests to the "/article/:articleTitle" route
+  .delete(function (req, res) {
+    // Use the Article model to delete the document(s) with the specified title from the database
+    // Note: req.params.articleTitle contains the title from the request URL
+    Article.deleteOne({ title: req.params.articleTitle })
+      // Once the delete operation is done, this function will be called
+      .then(function () {
+        // Send a success message back to the client as the response
+        res.send("Successfully deleted record!");
+      })
+      // If an error occurred during the delete operation, this function will be called with the error as its argument
+      .catch(function (err) {
+        // Send the error back to the client as the response
+        res.send(err);
+      });
   });
-
-// .post()
-// .delete();
 
 // Make the Express application listen for HTTP requests on port 3000, logging a message to the console once the server is running
 app.listen(3000, function () {
