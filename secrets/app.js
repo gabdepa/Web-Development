@@ -165,6 +165,7 @@ app.get("/secrets", function (req, res) {
     });
 });
 
+// Route to render submit page
 app.get("/submit", function (req, res) {
   if (req.isAuthenticated()) {
     res.render("submit");
@@ -173,6 +174,7 @@ app.get("/submit", function (req, res) {
   }
 });
 
+// Route to handle secret submission
 app.post("/submit", function (req, res) {
   const submittedSecret = req.body.secret;
 
