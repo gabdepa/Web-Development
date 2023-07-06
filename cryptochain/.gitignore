@@ -1,1 +1,8 @@
+# Various IDEs and Editors
+.vscode/
+.idea/
+**/*~
+
+# frontend code
 node_modules/
+dist/
