@@ -1,5 +1,6 @@
 const Blockchain = require("./blockchain");
 const Block = require("./block");
+const { GENESIS_DATA, MINE_RATE } = require("./config");
 
 describe("Blockchain", () => {
   let blockchain, newChain, originalChain;
