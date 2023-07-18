@@ -1,7 +1,7 @@
-const Blockchain = require("./blockchain");
+const Blockchain = require(".");
 const Block = require("./block");
-const cryptoHash = require("./crypto-hash");
-const { GENESIS_DATA, MINE_RATE } = require("./config");
+const cryptoHash = require("../util/crypto-hash");
+const { GENESIS_DATA, MINE_RATE } = require("../config");
 
 describe("Blockchain", () => {
   let blockchain, newChain, originalChain;
